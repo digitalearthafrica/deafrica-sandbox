@@ -1,4 +1,4 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-full-3.10.0
+FROM ghcr.io/osgeo/gdal:ubuntu-full-3.10.2
 
 ENV SHELL=bash \
     DEBIAN_FRONTEND=non-interactive \
@@ -52,10 +52,10 @@ RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
   chmod +x /usr/bin/yq
 
 # install pandoc
-RUN wget https://github.com/jgm/pandoc/releases/download/3.6/pandoc-3.6-1-amd64.deb \
+RUN wget https://github.com/jgm/pandoc/releases/download/3.6.3/pandoc-3.6.3-1-amd64.deb \
   && apt --fix-broken install \
-  && dpkg -i pandoc-3.6-1-amd64.deb \
-  && rm pandoc-3.6-1-amd64.deb
+  && dpkg -i pandoc-3.6.3-1-amd64.deb \
+  && rm pandoc-3.6.3-1-amd64.deb
 
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
@@ -77,10 +77,14 @@ RUN useradd --no-log-init --create-home --shell /bin/bash --no-user-group --gid 
 RUN python3 -m venv $VIRTUAL_ENV \
     && chown -R $NB_UID:$NB_GID  $VIRTUAL_ENV
 
-COPY requirements.txt /
+COPY assets/tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl requirements.in /
 
 USER $NB_USER
-RUN python -m pip install --upgrade pip pip-tools
+RUN python -m pip install --upgrade pip pip-tools wheel
+# Install the 3.12 compatible wheel for tflite-runtime
+RUN pip install --no-cache-dir tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl
+# Compile required python packages.
+RUN pip-compile --output-file=requirements.txt requirements.in --verbose --upgrade
 # Install required python packages
 RUN pip install --no-cache-dir -r requirements.txt 
 # Enable server extensions
