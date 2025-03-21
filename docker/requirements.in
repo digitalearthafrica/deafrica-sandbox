@@ -45,7 +45,7 @@ flox
 folium
 fsspec[full]
 gcsfs
-GDAL[numpy]==3.10 # should match version in the base osgeo/gdal image
+GDAL[numpy]==3.10.2 # should match version in the base osgeo/gdal image
 geohash2
 geojson
 geopy
@@ -95,6 +95,7 @@ lark-parser
 latex
 line-profiler
 localtileserver
+lonboard
 rio-tiler
 mapclassify
 memory-profiler
@@ -115,7 +116,7 @@ odc-dscache
 odc-geo
 odc-io
 odc-stac
-odc-stats
+# odc-stats # Installed directly due tflite_runtime wheel
 # odc-tools apps
 odc-apps-cloud
 odc-apps-dc-tools
