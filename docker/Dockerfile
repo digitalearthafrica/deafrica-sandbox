@@ -3,7 +3,8 @@ FROM ghcr.io/osgeo/gdal:ubuntu-full-3.10.2
 ENV SHELL=bash \
     DEBIAN_FRONTEND=non-interactive \
     USE_PYGEOS=0 \
-    SPATIALITE_LIBRARY_PATH='mod_spatialite.so'
+    SPATIALITE_LIBRARY_PATH='mod_spatialite.so' \
+    GS_NO_SIGN_REQUEST=YES
 
 RUN apt update --yes \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
