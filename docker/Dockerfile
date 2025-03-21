@@ -77,16 +77,16 @@ RUN useradd --no-log-init --create-home --shell /bin/bash --no-user-group --gid 
 RUN python3 -m venv $VIRTUAL_ENV \
     && chown -R $NB_UID:$NB_GID  $VIRTUAL_ENV
 
-COPY assets/tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl requirements.in /
+COPY assets/tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl requirements.txt /
 
 USER $NB_USER
 RUN python -m pip install --upgrade pip pip-tools wheel
-# Install the 3.12 compatible wheel for tflite-runtime
-RUN pip install --no-cache-dir tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl
-# Compile required python packages.
-RUN pip-compile --output-file=requirements.txt requirements.in --verbose --upgrade
 # Install required python packages
 RUN pip install --no-cache-dir -r requirements.txt 
+# Install the 3.12 compatible wheel for tflite-runtime
+RUN pip install --no-cache-dir tflite_runtime-2.20.0-cp312-cp312-linux_x86_64.whl \
+  # Ensure the latest odc-stats is installed
+  && pip install --no-cache-dir --upgrade odc-stats
 # Enable server extensions
 RUN jupyter server extension enable --py --sys-prefix jupyterlab_iframe jupyter_resource_usage 
 # Fix to ensure numpy-based raster support has been properly installed
