@@ -22,7 +22,7 @@ cognitojwt # Used for user authentication
 colorama
 contextily
 dask-gateway-server
-eo-tides
+eo-tides>=0.9.1
 hdstats
 dask-gateway
 dask-image
@@ -128,7 +128,7 @@ osmnx
 OWSLib
 packaging
 pandana
-pandas==2.1.4 # due to sqalchemy dependency for datacube 1.8.x
+pandas>=2.2.0 # due to sqalchemy dependency for datacube 1.8.x
 pandoc
 panel
 param
