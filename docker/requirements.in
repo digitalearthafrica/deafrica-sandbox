@@ -25,14 +25,14 @@ dask-gateway-server
 eo-tides>=0.9.1
 hdstats
 dask-gateway
-dask-image
+dask-image==2025.11.0
 kombu
 dask-labextension>=7.0.0
-dask-ml
+dask-ml==2025.1.0
 dask[complete]  # due to dask-gateway
 # datacube-stats==1.0.2 # Replaced by odc-stats
 # dataclasses #  backport for Python 3.6
-datacube==1.8.20
+datacube==1.9.11
 datacube-ows
 datashader
 deafrica-tools>=2.5.5
@@ -163,7 +163,7 @@ Rtree
 git+https://github.com/daleroberts/s2cloudmask
 s3fs
 scikit-image
-scikit-learn
+scikit-learn==1.8.0
 scipy==1.14.1 # 1.15.0 is incompatible with hdstats 0.2.1
 seaborn
 setuptools-scm[toml]
@@ -174,6 +174,7 @@ structlog
 tensorflow
 # replace tflite-runtime-nightly
 # ai-edge-litert-nightly # no python 3.12 support
+ai-edge-litert
 thredds-crawler # archived
 timescale
 toolz
