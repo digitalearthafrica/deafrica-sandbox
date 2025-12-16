@@ -21,18 +21,19 @@ cmocean
 cognitojwt # Used for user authentication
 colorama
 contextily
-dask-gateway-server
 eo-tides>=0.9.1
 hdstats
 dask-gateway
-dask-image==2025.11.0
-kombu
-dask-labextension>=7.0.0
-dask-ml==2025.1.0
 dask[complete]  # due to dask-gateway
+dask-ml==2025.1.0
+dask-gateway-server
+dask-image==2025.11.0
+dask-labextension>=7.0.0
+kombu
 # datacube-stats==1.0.2 # Replaced by odc-stats
 # dataclasses #  backport for Python 3.6
 datacube==1.9.11
+# datacube==1.8.20
 datacube-ows
 datashader
 deafrica-tools>=2.5.5
