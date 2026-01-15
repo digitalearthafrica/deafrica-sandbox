@@ -18,49 +18,37 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     # Set up a cache
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Get Cache Docker layers
-      uses: pat-s/always-upload-cache@v2.1.5
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+      uses: docker/setup-buildx-action@v3
 
     - name: Login to DockerHub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3
       with:
         username: deafricadockersvs
         password: ${{ secrets.DEAFRICA_DOCKER_PASSWORD }}
 
     - name: Build and Push Docker
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: docker
-        cache-from: |
-          type=local,src=/tmp/.buildx-cache
-        cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         push: true
         tags: ${{ env.IMAGE_NAME }}:latest
 
-    - name: Build and Push Docker
-      uses: docker/build-push-action@v2
+    - name: Build and Push Docker (sudo)
+      uses: docker/build-push-action@v5
       with:
         build-args: |
           WITH_SUDO=yes
         context: docker
-        cache-from: |
-          type=local,src=/tmp/.buildx-cache
-        cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         push: true
         tags: ${{ env.IMAGE_NAME }}:sudo-latest
 
@@ -69,40 +57,24 @@ jobs:
       run: |
         echo "RELEASE=${GITHUB_REF/refs\/tags\/}" >> $GITHUB_ENV
 
-    - name: Build and Push Docker
-      uses: docker/build-push-action@v2
+    - name: Build and Push Docker (release)
+      uses: docker/build-push-action@v5
       if: github.event_name == 'release'
       with:
         context: docker
-        cache-from: |
-          type=local,src=/tmp/.buildx-cache
-        cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         push: true
         tags: ${{ env.IMAGE_NAME }}:${{ env.RELEASE }}
 
-    - name: Build and Push Docker
-      uses: docker/build-push-action@v2
+    - name: Build and Push Docker (sudo release)
+      uses: docker/build-push-action@v5
       if: github.event_name == 'release'
       with:
         build-args: |
           WITH_SUDO=yes
         context: docker
-        cache-from: |
-          type=local,src=/tmp/.buildx-cache
-        cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         push: true
         tags: ${{ env.IMAGE_NAME }}:sudo-${{ env.RELEASE }}
-
-
-
-    # This ugly bit is necessary if you don't want your cache to grow forever
-    # till it hits GitHub's limit of 5GB.
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
