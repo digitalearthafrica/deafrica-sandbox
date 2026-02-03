@@ -21,10 +21,10 @@ cmocean
 cognitojwt # Used for user authentication
 colorama
 contextily
-eo-tides>=0.9.1
+eo-tides>=0.10.2
 hdstats
 dask-gateway
-dask[complete]  # due to dask-gateway
+dask[complete]==2026.1.2  # due to dask-gateway
 dask-ml==2025.1.0
 dask-gateway-server
 dask-image==2025.11.0
@@ -32,14 +32,13 @@ dask-labextension>=7.0.0
 kombu
 # datacube-stats==1.0.2 # Replaced by odc-stats
 # dataclasses #  backport for Python 3.6
-datacube==1.9.11
-# datacube==1.8.20
-datacube-ows
+datacube>=1.9.13
+datacube-ows>=1.9.8
 datashader
 deafrica-tools>=2.5.5
 descartes
 dill
-distributed # due to dask-gateway
+distributed==2026.1.2 # due to dask-gateway
 docutils
 eodatasets3
 flox
@@ -113,15 +112,16 @@ numpy
 odc-algo
 odc-cloud[ASYNC]
 odc-dscache
-odc-geo
+odc-geo>=0.5.0
 odc-io
-odc-stac
+odc-stac==0.5.2
 odc-stats
 # odc-tools apps
 odc-apps-cloud
 odc-apps-dc-tools
 # odc-tools libs
 odc-ui
+odc-loader==0.6.4
 opencv-contrib-python-headless
 opencv-python-headless
 osmnx
@@ -157,7 +157,7 @@ pyTMD
 pytz
 pyviz_comms
 pyyaml
-rasterio --no-binary=rasterio
+rasterio>=1.5.0 --no-binary=rasterio
 rasterstats
 rioxarray
 Rtree
@@ -170,12 +170,14 @@ seaborn
 setuptools-scm[toml]
 sidecar
 spyndex
-sqlalchemy
+# sqlalchemy
+SQLAlchemy==2.0.46
 structlog
 tensorflow
 # replace tflite-runtime-nightly
 # ai-edge-litert-nightly # no python 3.12 support
 ai-edge-litert
+tblib>=3.2.2
 thredds-crawler # archived
 timescale
 toolz
@@ -188,4 +190,3 @@ xarray
 xgboost # used by Dale's s2cloudmask
 yapf
 zarr
-
